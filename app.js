@@ -5,8 +5,8 @@ const CONFIG = {
   formEndpoint: '',                               // e.g. Formspree URL: https://formspree.io/f/xxxxxx
   stripeLink: '',                                 // Stripe/Lemon Squeezy payment link with 7-day trial. Empty = demo mode
   trialDays: 7,
-  supabaseUrl: '',   // from Supabase > Project Settings > API
-  supabaseKey: '',   // the anon/public key (never the service_role key)
+  supabaseUrl: 'https://cjxlovcuvdcuxihmhksj.supabase.co',   // from Supabase > Project Settings > API
+  supabaseKey: 'sb_publishable_mjfViI6RRUVR7PemHvkVqw_8Mv44N28',   // the anon/public key (never the service_role key)
   workerUrl: ''      // your Cloudflare Worker URL (sends invitation emails)
 };
 /* ============ DEMO DATA LAYER ============
