@@ -153,8 +153,10 @@ const PG={home,pricing,contact,signup,login,checkout,dashboard:dash,speakers:spe
 const PRIV=['checkout','dashboard','speakers','add-speaker','calendar'];
 async function route(){await loadData();
 const p=document.body.dataset.page,u=me(),q=new URLSearchParams(location.search),arg=q.get('t')||q.get('id');
+if(PRIV.includes(p)&&!u&&sessionStorage.getItem('jl')){sessionStorage.removeItem('jl');const dg={...window.DIAG,supabaseConfigured:!!CONFIG.supabaseUrl,libraryLoaded:!!window.supabase,usingSupabase:!!SB};$('#app').innerHTML='<div class="form"><h1>Login check</h1><p class="lead">Copy this box and send it to Claude:</p><pre style="white-space:pre-wrap;background:#f5f5f7;padding:14px;border-radius:12px">'+esc(JSON.stringify(dg,null,1))+'</pre><p class="note"><a href="login.html">Back to login</a></p></div>';return}
+if(PRIV.includes(p)&&!u&&window.NOPROF){$('#app').innerHTML='<div class="form"><h1>Account setup incomplete</h1><p class="lead">You are logged in, but your profile row is missing in the database. Run the profile fix SQL from the guide, then <a data-act="logout">log out</a> and log in again.</p></div>';return}
 if(PRIV.includes(p)){if(!u){location.href='login.html';return}if(p!=='checkout'&&!u.trialEnds){location.href='checkout.html';return}}
-$('#app').innerHTML=PG[p](arg);
+if(u)sessionStorage.removeItem('jl');$('#app').innerHTML=PG[p](arg);
 if(p==='add-speaker'&&arg){const s=speakers().find(x=>x.id===arg),f=$('form[data-act=addsp]');
 if(s&&f){f.dataset.edit=arg;[...f.elements].forEach(el=>{if(el.name&&s[el.name]!=null)el.value=s[el.name]});['d1','d2','d3'].forEach((k,i)=>f.elements[k].value=(s.dates||[])[i]||'')}}
 $('#navAuth').innerHTML=u?'<a href="dashboard.html">Dashboard</a><a class="nav-sp" href="speakers.html">Speakers</a><a class="nav-sp" href="calendar.html">Calendar</a><a class="nav-sp" data-act="logout">Log out</a>':'<a href="login.html">Log in</a><a class="btn sm nav-sp" href="signup.html">Start free trial</a>';
@@ -165,9 +167,10 @@ const q=new URLSearchParams(location.search);
 if(SB&&document.body.dataset.page==='speaker'){const t=q.get('t'),r=t?await SB.rpc('get_speaker',{t}):{};U=null;SP=r.data?[{...r.data,id:t,date:r.data.date||''}]:[];return}
 if(!SB){U=LS.get('users',[]).find(u=>u.email===LS.get('me'))||null;SP=LS.get('speakers',[]);return}
 const {data:{session}}=await SB.auth.getSession();
-if(!session){U=null;SP=[];return}
-const {data:p}=await SB.from('profiles').select('*').eq('id',session.user.id).single();
-U=p?{...p,email:session.user.email,trialEnds:p.trial_ends}:null;
+if(!session){window.DIAG={session:false};U=null;SP=[];return}
+const {data:p,error:pe}=await SB.from('profiles').select('*').eq('id',session.user.id).single();
+window.DIAG={session:true,profile:pe?(pe.code+': '+pe.message):(p?'found':'no row'),trial_ends:p?String(p.trial_ends):null};
+U=p?{...p,email:session.user.email,trialEnds:p.trial_ends}:null;window.NOPROF=!p;
 const {data:r}=await SB.from('speakers').select('*').order('created_at',{ascending:false});
 SP=(r||[]).map(x=>({...x,date:x.date||'',owner:session.user.email}))}
 async function addSp(row){
@@ -201,7 +204,7 @@ if(!data.session)return msg('Check your inbox to confirm your email, then log in
 const us=LS.get('users',[]);if(us.some(u=>u.email===d.email))return msg('An account with this email already exists.');
 LS.set('users',[...us,d]);LS.set('me',d.email);location.href='checkout.html';return}
 if(a==='login'){
-if(SB){const {error}=await SB.auth.signInWithPassword({email:d.email,password:d.password});if(error)throw error;location.href='dashboard.html';return}
+if(SB){const {error}=await SB.auth.signInWithPassword({email:d.email,password:d.password});if(error)throw error;sessionStorage.setItem('jl','1');location.href='dashboard.html';return}
 const u=LS.get('users',[]).find(u=>u.email===d.email&&u.password===d.password);if(!u)return msg('Incorrect email or password.');
 LS.set('me',u.email);location.href='dashboard.html';return}
 if(a==='addsp'){
