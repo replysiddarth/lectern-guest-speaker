@@ -1,5 +1,5 @@
 /* ============ CONFIG — edit these ============ */
-const CONFIG=Object.assign({brand:'Lectern',contactEmail:'hello@yourdomain.com',formEndpoint:'',stripeLink:'',trialDays:7,supabaseUrl:'',supabaseKey:'',workerUrl:'',enforcePaywall:false,billingPortalUrl:''},window.LECTERN_CONFIG||{});
+const CONFIG=Object.assign({brand:'Lectern',contactEmail:'support@lecternguestspeaker.online',formEndpoint:'',stripeLink:'',trialDays:7,supabaseUrl:'',supabaseKey:'',workerUrl:'',enforcePaywall:false,billingPortalUrl:''},window.LECTERN_CONFIG||{});
 /* ============ DEMO DATA LAYER ============
    Uses localStorage so you can test the whole flow with zero backend.
    To go live, replace LS.get/LS.set calls with Supabase (see guide). */
