@@ -2,7 +2,7 @@
 window.LECTERN_CONFIG = {
   supabaseUrl: 'https://cjxlovcuvdcuxihmhksj.supabase.co',   // Supabase > Project Settings > API > Project URL
   supabaseKey: 'sb_publishable_mjfViI6RRUVR7PemHvkVqw_8Mv44N28',   // the publishable (anon) key, never the secret key
-  workerUrl: '',     // your Cloudflare Worker URL (later)
+  workerUrl: 'lectern-mailer.reply-siddarth.workers.dev',     // your Cloudflare Worker URL (later)
   contactEmail: 'support@lecternguestspeaker.online',
   formEndpoint: '',  // optional Formspree URL so Contact/Help messages reach your inbox
   stripeLink: '',    // payment link (later)
