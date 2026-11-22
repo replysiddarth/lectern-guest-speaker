@@ -4,7 +4,7 @@ window.LECTERN_CONFIG = {
   supabaseKey: 'sb_publishable_mjfViI6RRUVR7PemHvkVqw_8Mv44N28',   // the publishable (anon) key, never the secret key
   workerUrl: 'lectern-mailer.reply-siddarth.workers.dev',     // your Cloudflare Worker URL (later)
   contactEmail: 'support@lecternguestspeaker.online',
-  formEndpoint: '',  // optional Formspree URL so Contact/Help messages reach your inbox
+  formEndpoint: 'https://formspree.io/f/xyewnrzz',  // optional Formspree URL so Contact/Help messages reach your inbox
   stripeLink: '',    // payment link (later)
   billingPortalUrl: '', // your payment provider's customer portal link, so users can cancel (later)
   enforcePaywall: false // false = trials never expire (testing). true = expired trials must subscribe
